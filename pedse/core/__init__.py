@@ -1,1 +1,1 @@
-from .symbiotic_evolution import func1
+from .symbiotic_evolution import evolution
