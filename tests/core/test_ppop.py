@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from pedse.core import Individual, Population
+from pedse import Individual, Population
 
 
 # Test the initialization of the Individual class.
