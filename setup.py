@@ -21,6 +21,6 @@ setuptools.setup(
     author="fightingso",
     license="MIT",
     long_description=get_long_description(),
-    url="https://github.com/fightingso/pedse"
     install_requires=get_requirements(),
+    url="https://github.com/fightingso/pedse"
 )
