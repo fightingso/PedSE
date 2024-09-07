@@ -1,6 +1,6 @@
 import numpy as np
-from ppop import Population as PartialPopulation
-from wpop import WholePopulation
+from .ppop import Population as PartialPopulation
+from .wpop import WholePopulation
 
 class SymbioticEvolution:
     """
