@@ -1,11 +1,3 @@
-from .core.ppop import Individual, Population
-from .core.wpop import WholeIndividual, WholePopulation
-from .core.symbiotic_evolution import SymbioticEvolution
+from .core import PartialIndividual, PartialPopulation, SymbioticEvolution, WholeIndividual, WholePopulation
 
-__annotations__ = {
-    'Individual': Individual,
-    'Population': Population,
-    'WholeIndividual': WholeIndividual,
-    'WholePopulation': WholePopulation,
-    'SymbioticEvolution': SymbioticEvolution
-}
+__all__ = ["PartialIndividual", "PartialPopulation", "WholeIndividual", "WholePopulation", "SymbioticEvolution"]

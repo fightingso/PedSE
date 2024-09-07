@@ -5,7 +5,7 @@ from .ppop import Population
 
 class WholeIndividual:
     """
-    Class for an individual in the population.
+    Class for an individual in the whole population.
 
     Args:
       chrom_len: int
@@ -43,7 +43,7 @@ class WholeIndividual:
 
 class WholePopulation:
     """
-    Class for the population.
+    Class for the whole population.
 
     Args:
       pop_size: int

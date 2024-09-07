@@ -1,9 +1,9 @@
 import numpy as np
 
 
-class Individual:
+class PartialIndividual:
     """
-    Class for an individual in the population.
+    Class for an individual in the partial population.
 
     Args:
       chrom_len: int
@@ -45,9 +45,9 @@ class Individual:
                 self.chrom[i] = 1 - self.chrom[i]
 
 
-class Population:
+class PartialPopulation:
     """
-    Class for the population.
+    Class for the partial population.
 
     Args:
       pop_size: int
@@ -68,7 +68,7 @@ class Population:
         mutate_prob: float,
         crossover_prob: float,
     ) -> None:
-        self.population = [Individual(chrom_len, mutate_prob) for _ in range(pop_size)]
+        self.population = [PartialIndividual(chrom_len, mutate_prob) for _ in range(pop_size)]
         self.crossover_prob = crossover_prob
 
     # Perform crossover between parents.

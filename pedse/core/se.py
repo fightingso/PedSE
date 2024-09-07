@@ -1,6 +1,8 @@
 import numpy as np
-from .ppop import Population as PartialPopulation
+
+from .ppop import PartialPopulation
 from .wpop import WholePopulation
+
 
 class SymbioticEvolution:
     """
@@ -49,42 +51,3 @@ class SymbioticEvolution:
             print(f"Generation {generation}: Avg fitness: {avg_fitness}, Best fitness: {best_fitness}")
 
         return best_individual
-
-
-# Example of fitness evaluation function to be used with SymbioticEvolution
-def evaluate_fitness(whole_population: WholePopulation, partial_population: PartialPopulation):
-    """
-    Evaluates the fitness of the entire population by summing the fitness of the partial population in each whole individual.
-    """
-    total_fitness = 0
-    for individual in whole_population.population:
-        fitness = np.sum([ind.fitness for ind in individual.chrom])
-        individual.fitness = fitness
-        total_fitness += fitness
-    avg_fitness = total_fitness / len(whole_population.population)
-    return avg_fitness, whole_population
-
-
-if __name__ == "__main__":
-    # Initialize partial population
-    partial_pop_size = 20
-    partial_chrom_len = 10
-    mutate_prob_partial = 0.1
-    crossover_prob_partial = 0.8
-    partial_population = PartialPopulation(partial_pop_size, partial_chrom_len, mutate_prob_partial, crossover_prob_partial)
-
-    # Initialize whole population
-    whole_pop_size = 10
-    whole_chrom_len = 5
-    mutate_prob_whole = 0.05
-    crossover_prob_whole = 0.9
-    whole_population = WholePopulation(whole_pop_size, whole_chrom_len, mutate_prob_whole, crossover_prob_whole, partial_population)
-
-    # Initialize Symbiotic Evolution with fitness evaluation function
-    se = SymbioticEvolution(eval=evaluate_fitness, chrom_len=whole_chrom_len, partial_pop=partial_population, whole_pop=whole_population)
-
-    # Run the evolution for 100 generations
-    
-    best_individual = se.evolution(generations=100)
-
-   
