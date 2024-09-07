@@ -1,6 +1,6 @@
 import numpy as np
 
-from .ppop import Population
+from .ppop import PartialPopulation
 
 
 class WholeIndividual:
@@ -17,7 +17,7 @@ class WholeIndividual:
     """
 
     # Initialize the individual with a random chromosome.
-    def __init__(self, chrom_len: int, mutate_prob: float, ppop: Population) -> None:
+    def __init__(self, chrom_len: int, mutate_prob: float, ppop: PartialPopulation) -> None:
         self.chrom = [np.random.choice(ppop.population) for _ in range(chrom_len)]
         self.chrom_len = chrom_len
         self.mutate_prob = mutate_prob
@@ -25,7 +25,7 @@ class WholeIndividual:
 
     # Perform crossover between two parents.
     def crossover(
-        self, parent1: "WholeIndividual", parent2: "WholeIndividual", index1: int, index2: int, ppop: Population
+        self, parent1: "WholeIndividual", parent2: "WholeIndividual", index1: int, index2: int, ppop: PartialPopulation
     ) -> None:
         if index1 > index2:
             index1, index2 = index2, index1
@@ -35,7 +35,7 @@ class WholeIndividual:
         self.mutate(ppop)
 
     # Mutate the chromosome.
-    def mutate(self, ppop: Population) -> None:
+    def mutate(self, ppop: PartialPopulation) -> None:
         for i in range(self.chrom_len):
             if np.random.rand() < self.mutate_prob:
                 self.chrom[i] = np.random.choice(ppop.population)
@@ -60,7 +60,7 @@ class WholePopulation:
 
     # Initialize the population with random individuals.
     def __init__(
-        self, pop_size: int, chrom_len: int, mutate_prob: float, crossover_prob: float, ppop: Population
+        self, pop_size: int, chrom_len: int, mutate_prob: float, crossover_prob: float, ppop: PartialPopulation
     ) -> None:
         self.population = [WholeIndividual(chrom_len, mutate_prob, ppop) for _ in range(pop_size)]
         self.chrom_len = chrom_len
@@ -68,7 +68,7 @@ class WholePopulation:
         self.crossover_prob = crossover_prob
 
     # Perform crossover between parents.
-    def crossover(self, ppop: Population) -> None:
+    def crossover(self, ppop: PartialPopulation) -> None:
         for i in range(int(len(self.population) * (1 - self.crossover_prob)), len(self.population)):
             parent1, parent2 = np.random.choice(len(self.population) // 4, size=2)
             index1, index2 = np.random.randint(0, self.population[0].chrom_len, size=2)
