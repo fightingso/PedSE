@@ -1,6 +1,6 @@
 import numpy as np
 
-from pedse.core import Population
+from .ppop import Population
 
 
 class WholeIndividual:
