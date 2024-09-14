@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from pedse import Individual, Population
+from pedse.core import PartialIndividual, PartialPopulation
 
 
 # Test the initialization of the Individual class.
@@ -14,7 +14,7 @@ from pedse import Individual, Population
     ],
 )
 def test_individual(chrom_len, mutate_prob):
-    ind = Individual(chrom_len, mutate_prob)
+    ind = PartialIndividual(chrom_len, mutate_prob)
 
     # Check if the chromosome is of the correct length and contains only 0s and 1s.
     assert len(ind.chrom) == chrom_len
@@ -36,7 +36,7 @@ def test_individual(chrom_len, mutate_prob):
     ],
 )
 def test_population(pop_size, chrom_len, mutate_prob, crossover_prob):
-    pop = Population(pop_size, chrom_len, mutate_prob, crossover_prob)
+    pop = PartialPopulation(pop_size, chrom_len, mutate_prob, crossover_prob)
 
     # Check if the population size is correct.
     assert len(pop.population) == pop_size
