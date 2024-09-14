@@ -1,4 +1,3 @@
-import numpy as np
 import pytest
 
 from pedse.core import PartialIndividual, PartialPopulation
