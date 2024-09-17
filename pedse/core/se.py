@@ -1,5 +1,3 @@
-import numpy as np
-
 from .ppop import PartialPopulation
 from .wpop import WholePopulation
 

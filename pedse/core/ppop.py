@@ -1,5 +1,5 @@
-import numpy as np
-
+#import numpy as np
+import torch
 
 class PartialIndividual:
     """
@@ -10,6 +10,8 @@ class PartialIndividual:
         Length of the chromosome.
       mutate_prob: float
         Probability
+      device: torch.device
+        Device on which tensors are allocated ('cpu' or 'cuda').
     """
 
     # Initialize the individual with a random chromosome.
@@ -17,11 +19,13 @@ class PartialIndividual:
         self,
         chrom_len: int,
         mutate_prob: float,
+        device: torch.device
     ) -> None:
-        self.chrom = np.random.randint(0, 2, chrom_len)
+        self.chrom = torch.randint(0, 2, (chrom_len,), device=device)
         self.fitness = 1e9
         self.chrom_len = chrom_len
         self.mutate_prob = mutate_prob
+        
 
     # Perform crossover between two parents.
     def crossover(
@@ -41,7 +45,7 @@ class PartialIndividual:
     # Mutate the chromosome.
     def mutate(self) -> None:
         for i in range(self.chrom_len):
-            if np.random.rand() < self.mutate_prob:
+            if  torch.rand(1).item() < self.mutate_prob:
                 self.chrom[i] = 1 - self.chrom[i]
 
 
@@ -58,6 +62,7 @@ class PartialPopulation:
         Probability of mutation.
       crossover_prob: float
         Probability
+     
     """
 
     # Initialize the population with random individuals.
@@ -67,15 +72,17 @@ class PartialPopulation:
         chrom_len: int,
         mutate_prob: float,
         crossover_prob: float,
+        device: torch.device
+        
     ) -> None:
-        self.population = [PartialIndividual(chrom_len, mutate_prob) for _ in range(pop_size)]
+        self.population = [PartialIndividual(chrom_len, mutate_prob,device) for _ in range(pop_size)]
         self.crossover_prob = crossover_prob
 
     # Perform crossover between parents.
     def crossover(self) -> None:
         for i in range(int(len(self.population) * (1 - self.crossover_prob)), len(self.population)):
-            parent1, parent2 = np.random.choice(len(self.population) // 4, size=2)
-            index1, index2 = np.random.randint(0, self.population[0].chrom_len, size=2)
+            parent1, parent2 =  torch.randint(0, len(self.population) // 4, (2,))
+            index1, index2 = torch.randint(0, self.population[0].chrom_len, (2,))
             self.population[i].crossover(self.population[parent1], self.population[parent2], index1, index2)
 
     # Reset the fitness of the individuals.

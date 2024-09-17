@@ -1,7 +1,7 @@
-import numpy as np
 
+import torch
 from .ppop import PartialPopulation
-
+import random
 
 class WholeIndividual:
     """
@@ -14,14 +14,24 @@ class WholeIndividual:
         Probability
       ppop: PartialPopulation
         Population object
+      device: torch.device
+        Device on which tensors are allocated ('cpu' or 'cuda').
     """
 
     # Initialize the individual with a random chromosome.
-    def __init__(self, chrom_len: int, mutate_prob: float, ppop: PartialPopulation) -> None:
-        self.chrom = [np.random.choice(ppop.population) for _ in range(chrom_len)]
+    def __init__(
+        self,
+        chrom_len: int,
+        mutate_prob: float,
+        ppop: PartialPopulation,
+        device: torch.device
+        ) -> None:
+        self.chrom =  [random.choice(ppop.population) for _ in range(chrom_len)]
         self.chrom_len = chrom_len
         self.mutate_prob = mutate_prob
         self.fitness = 1e9
+        
+
 
     # Perform crossover between two parents.
     def crossover(
@@ -37,8 +47,8 @@ class WholeIndividual:
     # Mutate the chromosome.
     def mutate(self, ppop: PartialPopulation) -> None:
         for i in range(self.chrom_len):
-            if np.random.rand() < self.mutate_prob:
-                self.chrom[i] = np.random.choice(ppop.population)
+            if torch.rand(1).item()  < self.mutate_prob:
+                self.chrom[i] = random.choice(ppop.population)
 
 
 class WholePopulation:
@@ -60,9 +70,15 @@ class WholePopulation:
 
     # Initialize the population with random individuals.
     def __init__(
-        self, pop_size: int, chrom_len: int, mutate_prob: float, crossover_prob: float, ppop: PartialPopulation
+        self, 
+        pop_size: int, 
+        chrom_len: int, 
+        mutate_prob: float, 
+        crossover_prob: float, 
+        ppop: PartialPopulation,
+        device: torch.device
     ) -> None:
-        self.population = [WholeIndividual(chrom_len, mutate_prob, ppop) for _ in range(pop_size)]
+        self.population = [WholeIndividual(chrom_len, mutate_prob,ppop,device) for _ in range(pop_size)]
         self.chrom_len = chrom_len
         self.pop_size = pop_size
         self.crossover_prob = crossover_prob
@@ -70,8 +86,8 @@ class WholePopulation:
     # Perform crossover between parents.
     def crossover(self, ppop: PartialPopulation) -> None:
         for i in range(int(len(self.population) * (1 - self.crossover_prob)), len(self.population)):
-            parent1, parent2 = np.random.choice(len(self.population) // 4, size=2)
-            index1, index2 = np.random.randint(0, self.population[0].chrom_len, size=2)
+            parent1, parent2 = torch.randint(0, self.pop_size // 4, (2,))
+            index1, index2 = torch.randint(0, self.chrom_len, (2,))
             self.population[i].crossover(self.population[parent1], self.population[parent2], index1, index2, ppop)
 
     # Reset the fitness of the individuals.
